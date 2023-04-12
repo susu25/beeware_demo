@@ -1,0 +1,13 @@
+name = "Hello Susu"
+description = "My first application"
+version = "0.0.1"
+terminal = false
+packages = [
+    "/static/wheels/hellosusu-0.0.1-py3-none-any.whl",
+    "/static/wheels/toga_core-0.3.0-py3-none-any.whl",
+    "/static/wheels/toga_web-0.3.0-py3-none-any.whl",
+    "/static/wheels/travertino-0.1.3-py3-none-any.whl",
+]
+
+[splashscreen]
+autoclose = true

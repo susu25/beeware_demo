@@ -1,0 +1,50 @@
+"""
+togaDivider
+"""
+import toga
+from toga.constants import COLUMN, ROW
+from toga.style import Pack
+ 
+ 
+class DividerApp(toga.App):
+    def startup(self):
+        # 创建主窗口，定义窗口标题与窗口大小
+        self.main_window = toga.MainWindow(title=self.name, size=(500,300))
+        # 定义style，便于style引用
+        style = Pack(padding_top=24)
+        substyle = Pack(padding_right=12, padding_left=12, flex=1)
+ 
+        # 在主窗口内添加部件
+        self.main_window.content = toga.Box(
+            children=[
+                toga.Label("第一部份"),
+                toga.Divider(style=style),
+                toga.Label("第二部份", style=style),
+                toga.Divider(style=style),
+                toga.Label("第三部份", style=style),
+                toga.Box(
+                    children=[
+                        toga.TextInput(placeholder="第一个文本框"),
+                        toga.Divider(direction=toga.Divider.VERTICAL, style=substyle),
+                        toga.TextInput(placeholder="第二个文本框"),
+                    ],
+                    style=Pack(direction=ROW, padding=24, flex=1),
+                ),
+            ],
+            style=Pack(direction=COLUMN, padding=24),
+        )
+ 
+        # Show the main window
+        self.main_window.show()
+ 
+ 
+def main():
+    # Application class
+    #   App name and namespace
+    app = DividerApp("Dividers", "org.beeware.helloworld")
+    return app
+ 
+ 
+if __name__ == "__main__":
+    app = main()
+    app.main_loop()

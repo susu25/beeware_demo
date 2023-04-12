@@ -1,0 +1,107 @@
+"""
+togaDetailedList
+"""
+import asyncio
+ 
+import toga
+from toga.constants import COLUMN, ROW
+from toga.style import Pack
+ 
+from .translations import bee_translations
+ 
+ 
+class ExampleDetailedListApp(toga.App):
+    #选中list内的条目后触发的动作
+    def on_select_handler(self, widget, row, **kwargs):
+        self.label.text = (
+            f"Bee is {row.title} in {row.subtitle}"
+            if row is not None
+            else "没有行选中"
+        )
+ 
+    async def on_refresh_handler(self, widget, **kwargs):
+        self.label.text = "正在刷新列表..."
+        # 我们使用的是本地数据源，因此根本没有理由
+        # 使用刷新。然而，为了演示的目的，让我们假装
+        # 我们正在从一个API获取数据，需要1秒才能响应。
+        await asyncio.sleep(1)
+        self.label.text = "列表已经刷新."
+ 
+    def on_delete_handler(self, widget, row, **kwargs):
+        self.label.text = f"行 {row.subtitle} 已经删除."
+ 
+    # 按下插入按钮后触发的功能
+    def insert_handler(self, widget, **kwargs):
+        item = {"icon": None, "subtitle": "这是刚插入的", "title": "已插入"}
+        if self.dl.selection:
+            index = self.dl.data.index(self.dl.selection) + 1
+            self.dl.data.insert(index, **item)
+        else:
+            index = len(self.dl.data)
+            self.dl.data.append(**item)
+        self.dl.scroll_to_row(index)
+    #删除所选条目动作
+    def remove_handler(self, widget, **kwargs):
+        if self.dl.selection:
+            self.dl.data.remove(self.dl.selection)
+ 
+    def startup(self):
+        # 创建主窗口
+        self.main_window = toga.MainWindow(title=self.name)
+ 
+        #创建按钮，并设置on_press功能
+        btn_style = Pack(flex=1, padding=10)
+        self.btn_insert = toga.Button(
+            "插入行", on_press=self.insert_handler, style=btn_style
+        )
+        self.btn_remove = toga.Button(
+            "删除行", on_press=self.remove_handler, style=btn_style
+        )
+        #创建一个盒子，放上面二个按钮
+        self.btn_box = toga.Box(
+            children=[self.btn_insert, self.btn_remove], style=Pack(direction=ROW)
+        )
+ 
+        # 创建底部的Label
+        self.label = toga.Label("已准备好.")
+ 
+        self.dl = toga.DetailedList(
+            # 设置detailedlist数据源
+            data=[
+                {
+                    "icon": toga.Icon("resources/brutus.png"),
+                    "title": "字符:" + translation["string"],
+                    "subtitle": "国家:" + translation["country"],
+                }
+                for translation in bee_translations
+            ],
+            on_select=self.on_select_handler,
+            on_delete=self.on_delete_handler,
+            on_refresh=self.on_refresh_handler,
+            style=Pack(flex=1,),
+        )
+ 
+        #创建一个盒子，把btn_box,dl,labal放进去
+        outer_box = toga.Box(
+            children=[self.btn_box, self.dl, self.label],
+            style=Pack(
+                flex=1,
+                direction=COLUMN,
+                padding=10,
+            ),
+        )
+ 
+        # 把创建的所有内容盒子放在主窗口内
+        self.main_window.content = outer_box
+ 
+        # 显示主窗口
+        self.main_window.show()
+ 
+ 
+def main():
+    return ExampleDetailedListApp("Detailed List", "org.beeware.widgets.detailedlist")
+ 
+ 
+if __name__ == "__main__":
+    app = main()
+    app.main_loop()

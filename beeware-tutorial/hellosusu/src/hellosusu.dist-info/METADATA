@@ -1,0 +1,11 @@
+Metadata-Version: 2.1
+Briefcase-Version: 0.3.12
+Name: hellosusu
+Formal-Name: Hello Susu
+App-ID: com.example.hellosusu
+Version: 0.0.1
+Home-page: https://example.com/hellosusu
+Download-URL: https://example.com/hellosusu
+Author: Susu
+Author-email: susu@example.com
+Summary: My first application

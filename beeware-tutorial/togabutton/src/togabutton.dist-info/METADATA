@@ -1,0 +1,11 @@
+Metadata-Version: 2.1
+Briefcase-Version: 0.3.12
+Name: togabutton
+Formal-Name: TogaButton
+App-ID: com.example.togabutton
+Version: 0.0.1
+Home-page: https://example.com/togabutton
+Download-URL: https://example.com/togabutton
+Author: Susu
+Author-email: susu@example.com
+Summary: My first application

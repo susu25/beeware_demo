@@ -1,0 +1,163 @@
+"""
+togaDateTime
+"""
+from datetime import date, time
+ 
+import toga
+from toga.constants import COLUMN, RIGHT, ROW
+from toga.style import Pack
+ 
+class DateAndTimeApp(toga.App):
+    #格式化日期
+    def changed_date(self, widget):
+        print(f"{widget.id} is {widget.value.strftime('%A %d %B %Y')}")
+    #格式化时间
+    def changed_time(self, widget):
+        print(f"{widget.id} is {widget.value.strftime('%I:%M:%S %p')}")
+ 
+    def startup(self):
+        self.main_window = toga.MainWindow(title=self.name)
+ 
+        #创建一个盒子
+        any_date_box = toga.Box(
+            #在日期盒子里添加一个label，一个日期选择器
+            children=[
+                toga.Label("可选择任何日期:", style=Pack(width=150, text_align=RIGHT)),
+                toga.DatePicker(
+                    id="Any",
+                    value=None,
+                    on_change=self.changed_date,
+                ),
+            ],
+            style=Pack(direction=ROW),
+        )
+        #创建第二个盒子
+        min_date_box = toga.Box(
+            # 在日期盒子里添加一个label，一个日期选择器，并设定最小日期
+            children=[
+                toga.Label("设置最小日期的选择:", style=Pack(width=150, text_align=RIGHT)),
+                toga.DatePicker(
+                    id="Min",
+                    value=None,
+                    on_change=self.changed_date,
+                    min_date="2021-01-01",
+                ),
+            ],
+            style=Pack(direction=ROW),
+        )
+        # 创建第三个盒子
+        max_date_box = toga.Box(
+            # 在日期盒子里添加一个label，一个日期选择器，并设定最大日期
+            children=[
+                toga.Label("设置最大日期的选择:", style=Pack(width=150, text_align=RIGHT)),
+                toga.DatePicker(
+                    id="Max",
+                    value=date(2021, 4, 2),
+                    on_change=self.changed_date,
+                    max_date=date(2022, 2, 1),
+                ),
+            ],
+            style=Pack(direction=ROW),
+        )
+        # 创建第四个盒子
+        min_max_date_box = toga.Box(
+            # 在日期盒子里添加一个label，一个日期选择器,并设定最小，最大日期供选择器选择
+            children=[
+                toga.Label(
+                    "设置最小与最大之间日期的选择:", style=Pack(width=150, text_align=RIGHT)
+                ),
+                toga.DatePicker(
+                    id="Min-max",
+                    value=date(2021, 4, 2),
+                    on_change=self.changed_date,
+                    min_date=date(2021, 1, 1),
+                    max_date=date(2022, 2, 1),
+                ),
+            ],
+            style=Pack(direction=ROW),
+        )
+ 
+        # 创建第五个盒子
+        any_time_box = toga.Box(
+            # 在时间盒子里添加一个label，一个时间选择器
+            children=[
+                toga.Label("任何时间选择:", style=Pack(width=150, text_align=RIGHT)),
+                toga.TimePicker(
+                    id="Any time",
+                    value=None,
+                    on_change=self.changed_time,
+                ),
+            ],
+            style=Pack(direction=ROW),
+        )
+        # 创建第六个盒子
+        min_time_box = toga.Box(
+            # 在时间盒子里添加一个label，一个时间选择器，并设定最小选择时间
+            children=[
+                toga.Label("设置最小时间的选择:", style=Pack(width=150, text_align=RIGHT)),
+                toga.TimePicker(
+                    id="Min time",
+                    value=None,
+                    on_change=self.changed_time,
+                    min_time="06:35:00",
+                ),
+            ],
+            style=Pack(direction=ROW),
+        )
+        # 创建第七个盒子
+        max_time_box = toga.Box(
+            # 在时间盒子里添加一个label，一个时间选择器，并设定最大选择时间
+            children=[
+                toga.Label("设置最大时间的选择:", style=Pack(width=150, text_align=RIGHT)),
+                toga.TimePicker(
+                    id="Max time",
+                    value=time(10, 42),
+                    on_change=self.changed_time,
+                    max_time=time(21, 30),
+                ),
+            ],
+            style=Pack(direction=ROW),
+        )
+        # 创建第八个盒子
+        min_max_time_box = toga.Box(
+            # 在时间盒子里添加一个label，一个时间选择器，并设定最小与最大选择时间
+            children=[
+                toga.Label(
+                    "设置最小与最大之间时间的选择:", style=Pack(width=150, text_align=RIGHT)
+                ),
+                toga.TimePicker(
+                    id="Min-max time",
+                    value=time(10, 42),
+                    on_change=self.changed_time,
+                    min_time=time(8, 15),
+                    max_time=time(21, 30),
+                ),
+            ],
+            style=Pack(direction=ROW),
+        )
+        # 在Beeware主窗体内创建一个盒子，并加载上面创建的八个选择器功能盒子
+        self.main_window.content = toga.Box(
+            children=[
+                any_date_box,
+                min_date_box,
+                max_date_box,
+                min_max_date_box,
+                any_time_box,
+                min_time_box,
+                max_time_box,
+                min_max_time_box,
+            ],
+            style=Pack(direction=COLUMN),
+        )
+ 
+        # 显示主窗口
+        self.main_window.show()
+ 
+ 
+def main():
+    return DateAndTimeApp("Dates and Times", "org.beeware.widgets.date_and_time")
+ 
+ 
+if __name__ == "__main__":
+    app = main()
+    app.main_loop()
